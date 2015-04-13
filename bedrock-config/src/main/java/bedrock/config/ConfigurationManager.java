@@ -28,7 +28,6 @@ public final class ConfigurationManager {
     /**
      * Create a new instance of the class T
      *
-     * @param imports
      * @param <T>
      *
      * @param clazz
