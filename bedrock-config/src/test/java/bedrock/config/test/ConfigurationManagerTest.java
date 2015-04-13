@@ -63,6 +63,8 @@ public class ConfigurationManagerTest {
         int intValueOptionalDefault ();
     }
 
+    private static final String workingDirectory = System.getProperty("user.dir");
+    private static final Path propertiesPath = Paths.get (workingDirectory, propertiesFileName);
 
     @BeforeSuite
     public static void setUp () throws Exception {
@@ -71,76 +73,47 @@ public class ConfigurationManagerTest {
         testProperies.setProperty (keyPrefix + ".string.value", "this is a string value");
         testProperies.setProperty (keyPrefix + ".int.value", "1000");
 
-        String workingDirectory = System.getProperty("user.dir");
-        Path propertiesPath = Paths.get (workingDirectory, propertiesFileName);
-
-        try {
-
-            testProperies.store (Files.newOutputStream (propertiesPath), null);
-        } catch (IOException e) {
-            fail ("Failed to create test file.", e);
-        }
+        testProperies.store (Files.newOutputStream (propertiesPath), null);
     }
 
     @AfterSuite
     public static void tearDown () throws Exception {
-        String workingDirectory = System.getProperty("user.dir");
-        Path propertiesPath = Paths.get (workingDirectory, propertiesFileName);
-
         Files.deleteIfExists (propertiesPath);
     }
 
     @Test
-    void getConfigurationTest () {
-        try {
-            assertNotNull (ConfigurationManager.getConfiguration (TestConfiguration.class));
-
-        } catch (java.io.IOException e) {
-            fail ("getConfiguration threw an exception.", e);
-        }
+    void getConfigurationTest () throws Exception {
+        assertNotNull (ConfigurationManager.getConfiguration (TestConfiguration.class));
     }
 
     @Test
-    void getStringValue () {
-        try {TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
+    void getStringValue () throws Exception {
+        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
 
-            assertNotNull (testConfiguration.stringValue ());
-            assertEquals (testConfiguration.stringValue (), "this is a string value");
-
-        } catch (java.io.IOException e) {
-            fail ("getConfiguration threw an exception.", e);
-        }
+        assertNotNull (testConfiguration.stringValue ());
+        assertEquals (testConfiguration.stringValue (), "this is a string value");
     }
 
     @Test
-    void getStringValueOptional () {
-        try {TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
+    void getStringValueOptional () throws Exception {
+        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
 
-            assertNull (testConfiguration.stringValueOptional ());
-        } catch (java.io.IOException e) {
-            fail ("getConfiguration threw an exception.", e);
-        }
+        assertNull (testConfiguration.stringValueOptional ());
     }
 
     @Test
-    void getStringValueOptionalDefault () {
-        try {TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
+    void getStringValueOptionalDefault () throws Exception {
+        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
 
-            assertNotNull (testConfiguration.stringValueOptionalDefault ());
-            assertEquals (testConfiguration.stringValueOptionalDefault (), "this is a string value");
-        } catch (java.io.IOException e) {
-            fail ("getConfiguration threw an exception.", e);
-        }
+        assertNotNull (testConfiguration.stringValueOptionalDefault ());
+        assertEquals (testConfiguration.stringValueOptionalDefault (), "this is a string value");
+
     }
 
     @Test
-    void getIntValue () {
-        try {TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
+    void getIntValue () throws Exception {
+        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
 
-            assertEquals (testConfiguration.intValue (), 1000);
-
-        } catch (java.io.IOException e) {
-            fail ("getConfiguration threw an exception.", e);
-        }
+        assertEquals (testConfiguration.intValue (), 1000);
     }
 }
