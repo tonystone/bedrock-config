@@ -26,6 +26,12 @@ import java.nio.file.Paths;
 public final class ConfigurationManager {
 
     /**
+     * This class should never be instantiated
+     * so this constructor is marked private.
+     */
+    private ConfigurationManager () {}
+
+    /**
      * Create a new instance of the class T
      *
      * @param <T>
@@ -54,8 +60,6 @@ public final class ConfigurationManager {
         ConfigurationProxyImpl proxyImpl = new ConfigurationProxyImpl(storageManager, configuration.prefix ());
 
         return clazz.cast (Proxy.newProxyInstance (clazz.getClassLoader (), interfaces, proxyImpl));
-
-
     }
 }
 
