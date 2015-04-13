@@ -88,9 +88,6 @@ class StorageManagerPropertiesImpl implements StorageManager {
     public Object getValue (String key, Class<?> targetType, String defaultValue) {
         String stringValue = properties.getProperty (key, defaultValue);
 
-        if (stringValue == null) {
-           stringValue = defaultValue;
-        }
         return this.convert (stringValue, targetType);
     }
 
