@@ -20,11 +20,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @interface   DefaultValue
  * @package     bedrock.config
  *
- * @brief       A brief description.
+ * @brief       Specify a default value for an attribute.
  *
- * Here typically goes a more extensive explanation of what the header
- * defines. Doxygens tags are words preceeded by either a backslash @\
- * or by an at symbol @@.
+ * This method sets the default value of an attribute and
+ * implicitly set the attribute to optional.
  *
  * @author      Tony Stone
  * @date        4/12/15
