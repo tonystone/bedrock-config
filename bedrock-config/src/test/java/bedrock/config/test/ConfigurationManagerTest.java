@@ -10,9 +10,8 @@
 package bedrock.config.test;
 
 import bedrock.config.*;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import bedrock.config.Configuration;
+import org.testng.annotations.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +33,8 @@ public class ConfigurationManagerTest {
 
     private static final String propertiesFileName = "TestConfiguration.properties";
     private static final String keyPrefix          = "test.configuration";
+
+    private TestConfiguration testConfiguration = null;
 
     /**
      * This is the test configuration interface which will be created
@@ -80,7 +81,7 @@ public class ConfigurationManagerTest {
      * @throws Exception
      */
     @BeforeSuite
-    public static void setUp () throws Exception {
+    public static void suiteSetUp () throws Exception {
 
         Properties testProperies = new Properties();
 
@@ -98,8 +99,18 @@ public class ConfigurationManagerTest {
      * @throws Exception
      */
     @AfterSuite
-    public static void tearDown () throws Exception {
+    public static void suiteTearDown () throws Exception {
         Files.deleteIfExists (propertiesPath);
+    }
+
+    @BeforeTest
+    public void setup () throws Exception {
+        testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
+    }
+
+    @AfterTest
+    public void tearDown () throws Exception {
+        testConfiguration = null;
     }
 
     /**
@@ -109,66 +120,48 @@ public class ConfigurationManagerTest {
      */
     @Test
     void getConfigurationTest () throws Exception {
-        assertNotNull (ConfigurationManager.getConfiguration (TestConfiguration.class));
+        assertNotNull (testConfiguration);
     }
 
     @Test
     void getStringValue () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertNotNull (testConfiguration.stringValue ());
         assertEquals (testConfiguration.stringValue (), "this is a string value");
     }
 
     @Test
     void getStringValueOptional () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertNotNull (testConfiguration.stringValueOptional ());
         assertEquals (testConfiguration.stringValueOptional (), "this is a string default value");
     }
 
-
     @Test
     void getByteValue () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.byteValue () == -127);
     }
 
     @Test
     void getByteValueOptional () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.byteValueOptional () == 127);
     }
 
-
     @Test
     void getIntValue () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.intValue () == 1000);
     }
 
     @Test
     void getIntValueOptional () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.intValueOptional () == 2000);
     }
 
     @Test
     void getFloatValue () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.floatValue () == 10.10f);
     }
 
     @Test
     void getFloatValueOptional () throws Exception {
-        TestConfiguration testConfiguration = ConfigurationManager.getConfiguration (TestConfiguration.class);
-
         assertTrue (testConfiguration.floatValueOptional () == 20.20f);
     }
 }
