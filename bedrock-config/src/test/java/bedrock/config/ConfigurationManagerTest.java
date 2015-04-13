@@ -7,12 +7,13 @@
  * @date 4/11/15 6:31 PM
  */
 
-package bedrock.config.test;
+package bedrock.config;
 
 import bedrock.config.*;
 import bedrock.config.Configuration;
 import org.testng.annotations.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,6 +47,8 @@ public class ConfigurationManagerTest {
         @Key("string")
         String stringValue ();
 
+        String stringValueNoAnnotations ();
+
         @Key("string.optional")
         @DefaultValue ("this is a string default value")
         String stringValueOptional ();
@@ -72,6 +75,25 @@ public class ConfigurationManagerTest {
         float floatValueOptional ();
     }
 
+    /**
+     * Bedrock configurations must be annotated with the
+     * {@code @Configuration} annotation.  This interface
+     * is to test the error handling when they are not.
+     */
+    interface BadTestConfiguration {
+
+    }
+
+    /**
+     * Bedrock configurations must be an interface and not
+     * a class. This class is to test the error handling when
+     * a class is passed.
+     */
+    @Configuration(value=propertiesFileName, prefix = keyPrefix)
+    class BadClassTestConfiguration {
+
+    }
+
     private static final String workingDirectory = System.getProperty("user.dir");
     private static final Path propertiesPath = Paths.get (workingDirectory, propertiesFileName);
 
@@ -86,6 +108,7 @@ public class ConfigurationManagerTest {
         Properties testProperies = new Properties();
 
         testProperies.setProperty (keyPrefix + ".string", "this is a string value");
+        testProperies.setProperty (keyPrefix + ".stringValueNoAnnotations", "this is a string value with no annotations");
         testProperies.setProperty (keyPrefix + ".byte", "-127");
         testProperies.setProperty (keyPrefix + ".int", "1000");
         testProperies.setProperty (keyPrefix + ".float", "10.10");
@@ -114,54 +137,76 @@ public class ConfigurationManagerTest {
     }
 
     /**
-     * Testing main method for getting or creating Configuration objects.
-     *
-     * @throws Exception
+     * Tests
      */
     @Test
-    void getConfigurationTest () throws Exception {
-        assertNotNull (testConfiguration);
+    void testConstruction () throws Exception {
+//        assertNotNull (new ConfigurationManager ());
     }
 
     @Test
-    void getStringValue () throws Exception {
+    void testGetConfiguration () throws Exception {
+        assertNotNull (testConfiguration);
+    }
+
+    @Test (expectedExceptions = IOException.class)
+    void testGetConfigurationNotAnnotated () throws Exception {
+
+        ConfigurationManager.getConfiguration (BadTestConfiguration.class);
+    }
+
+    @Test (expectedExceptions = IOException.class)
+    void testGetConfigurationWithClass () throws Exception {
+
+        ConfigurationManager.getConfiguration (BadClassTestConfiguration.class);
+    }
+
+    @Test
+    void testStringValue () throws Exception {
         assertNotNull (testConfiguration.stringValue ());
         assertEquals (testConfiguration.stringValue (), "this is a string value");
     }
 
     @Test
-    void getStringValueOptional () throws Exception {
+    void testStringValueOptional () throws Exception {
         assertNotNull (testConfiguration.stringValueOptional ());
         assertEquals (testConfiguration.stringValueOptional (), "this is a string default value");
     }
 
     @Test
-    void getByteValue () throws Exception {
+    void testStringValueNoAnnotations () throws Exception {
+        assertNotNull (testConfiguration.stringValueNoAnnotations ());
+        assertEquals (testConfiguration.stringValueNoAnnotations (), "this is a string value with no annotations");
+    }
+
+    @Test
+    void testByteValue () throws Exception {
         assertTrue (testConfiguration.byteValue () == -127);
     }
 
     @Test
-    void getByteValueOptional () throws Exception {
+    void testByteValueOptional () throws Exception {
         assertTrue (testConfiguration.byteValueOptional () == 127);
     }
 
     @Test
-    void getIntValue () throws Exception {
+    void testIntValue () throws Exception {
         assertTrue (testConfiguration.intValue () == 1000);
     }
 
     @Test
-    void getIntValueOptional () throws Exception {
+    void testIntValueOptional () throws Exception {
         assertTrue (testConfiguration.intValueOptional () == 2000);
     }
 
     @Test
-    void getFloatValue () throws Exception {
+    void testFloatValue () throws Exception {
         assertTrue (testConfiguration.floatValue () == 10.10f);
     }
 
     @Test
-    void getFloatValueOptional () throws Exception {
+    void testFloatValueOptional () throws Exception {
         assertTrue (testConfiguration.floatValueOptional () == 20.20f);
     }
+
 }
