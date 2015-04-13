@@ -25,7 +25,6 @@ import java.nio.file.Paths;
  */
 public final class ConfigurationManager {
 
-
     /**
      * Create a new instance of the class T
      *
