@@ -102,13 +102,13 @@ class StorageManagerPropertiesImpl implements StorageManager {
     }
 
     private Object convert(String value, Class<?> targetType) {
-        if (targetType == Byte.TYPE) return Byte.parseByte(value);
-        if (targetType == Short.TYPE) return Short.parseShort(value);
-        if (targetType == Integer.TYPE) return Integer.parseInt(value);
-        if (targetType == Long.TYPE) return Long.parseLong(value);
-        if (targetType == Boolean.TYPE) return Boolean.parseBoolean(value);
-        if (targetType == Float.TYPE) return Float.parseFloat(value);
-        if (targetType == Double.TYPE) return Double.parseDouble(value);
-        else return value;
+        if (targetType == Byte.TYPE)    return Byte.parseByte(value);
+        if (targetType == Short.TYPE)   return Short.parseShort (value);
+        if (targetType == Boolean.TYPE) return Boolean.parseBoolean (value);
+        if (targetType == Integer.TYPE) return Integer.parseInt (value);
+        if (targetType == Long.TYPE)    return Long.parseLong (value);
+        if (targetType == Float.TYPE)   return Float.parseFloat(value);
+        if (targetType == Double.TYPE)  return Double.parseDouble(value);
+        else                            return value;
     }
 }
