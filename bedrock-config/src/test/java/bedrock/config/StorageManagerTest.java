@@ -8,7 +8,7 @@ import static org.testng.Assert.*;
  * bedrock
  *
  * @package bedrock.config
- * @interface StorageManagerPropertiesImplTest
+ * @interface StorageManager
  *
  * @author Tony Stone
  * @date 4/13/15
@@ -16,10 +16,10 @@ import static org.testng.Assert.*;
  */
 
 /**
- * @class       StorageManagerPropertiesImplTest
+ * @class       StorageManager
  * @package     bedrock.config
  *
- * @brief       Class to test the StorageManagerPropertiesImpl
+ * @brief       Abstract class to test the StorageManager implementations
  *
  * @author      Tony Stone
  * @date        4/13/15
