@@ -42,7 +42,7 @@ public class ConfigurationManagerTest {
      * and used to access the properties in the files.
      */
     @Configuration(value=propertiesFileName, prefix = keyPrefix)
-    interface TestConfiguration {
+    private interface TestConfiguration {
 
         @Key("string")
         String stringValue ();
@@ -80,7 +80,7 @@ public class ConfigurationManagerTest {
      * {@code @Configuration} annotation.  This interface
      * is to test the error handling when they are not.
      */
-    interface BadTestConfiguration {
+    private interface BadTestConfiguration {
 
     }
 
@@ -90,7 +90,7 @@ public class ConfigurationManagerTest {
      * a class is passed.
      */
     @Configuration(value=propertiesFileName, prefix = keyPrefix)
-    class BadClassTestConfiguration {
+    private class BadClassTestConfiguration {
 
     }
 
