@@ -135,7 +135,7 @@ public abstract class StorageManagerTest {
     }
 
     @Test (dependsOnMethods={"testLoad"})
-    public void testGetValue1 () throws Exception {
+    public void testGetValueWithDefault () throws Exception {
         for (TestParameters parameters : testData) {
             assertEquals (storageManager.getValue (parameters.key, parameters.type, parameters.value.toString ()), parameters.value);
         }
