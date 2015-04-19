@@ -13,6 +13,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.Documented;
 
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -22,15 +23,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * @brief       A brief description.
  *
- * Here typically goes a more extensive explanation of what the header
- * defines. Doxygens tags are words preceeded by either a backslash @\
- * or by an at symbol @@.
- *
  * @author      Tony Stone
  * @date        4/12/15
  */
 @Retention(RUNTIME)
-@Target(METHOD)
+@Target({TYPE, METHOD})
 @Documented
 public @interface Key {
     String value();

@@ -42,6 +42,7 @@ public class ConfigurationManagerTest {
      * and used to access the properties in the files.
      */
     @Configuration(propertiesFileName)
+    @Key (keyPrefix)
     private interface TestConfiguration {
 
         @Key("string")
