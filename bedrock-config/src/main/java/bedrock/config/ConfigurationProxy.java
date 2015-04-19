@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * @author      Tony Stone
  * @date        4/10/15
  */
-class ConfigurationProxyImpl implements InvocationHandler {
+class ConfigurationProxy implements InvocationHandler {
 
     /**
      * The storage manager responsible for storing and
@@ -38,7 +38,7 @@ class ConfigurationProxyImpl implements InvocationHandler {
     /**
      * Do not allow constructor
      */
-    private ConfigurationProxyImpl () {}
+    private ConfigurationProxy () {}
 
 
     /**
@@ -48,7 +48,7 @@ class ConfigurationProxyImpl implements InvocationHandler {
      * @param storageManager    Trhe storage manager to manage peristent storage.
      * @param keyPrefix
      */
-    public ConfigurationProxyImpl (StorageManager storageManager, String keyPrefix) {
+    public ConfigurationProxy (StorageManager storageManager, String keyPrefix) {
         this.storageManager = storageManager;
         this.keyPrefix      = keyPrefix;
     }

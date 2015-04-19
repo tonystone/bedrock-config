@@ -1,9 +1,5 @@
 package bedrock.config;
 
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +27,7 @@ import static org.testng.Assert.assertEquals;
  * @author      Tony Stone
  * @date        4/13/15
  */
-public class StorageManagerPropertiesImplTest extends StorageManagerTest {
+public class PropertiesStorageManagerTest extends StorageManagerTest {
 
     /**
      * Define the working directory for creation of test files.
@@ -59,6 +55,6 @@ public class StorageManagerPropertiesImplTest extends StorageManagerTest {
 
     @Override
     StorageManager newStorageManager () throws Exception {
-        return new StorageManagerPropertiesImpl (propertiesPath);
+        return new PropertiesStorageManager (propertiesPath);
     }
 }

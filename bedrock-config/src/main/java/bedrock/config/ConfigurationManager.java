@@ -55,7 +55,7 @@ public final class ConfigurationManager {
         Path sourcePath = Paths.get (workingDirectory, configuration.value ());
 
         Class<?>[] interfaces = {clazz};
-        StorageManager storageManager    = new StorageManagerPropertiesImpl (sourcePath);
+        StorageManager storageManager    = new PropertiesStorageManager (sourcePath);
 
         ConfigurationProxyImpl proxyImpl = new ConfigurationProxyImpl(storageManager, configuration.prefix ());
 

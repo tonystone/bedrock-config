@@ -23,7 +23,7 @@ import java.util.Properties;
  * @author Tony Stone
  * @date 4/12/15
  */
-class StorageManagerPropertiesImpl implements StorageManager {
+class PropertiesStorageManager implements StorageManager {
 
     /**
      * Backing store for this implementation.
@@ -32,10 +32,10 @@ class StorageManagerPropertiesImpl implements StorageManager {
 
     private Path propertiesPath;
 
-    private StorageManagerPropertiesImpl () {
+    private PropertiesStorageManager () {
     }
 
-    public StorageManagerPropertiesImpl (Path propertiesPath) throws IOException {
+    public PropertiesStorageManager (Path propertiesPath) throws IOException {
         this.propertiesPath = propertiesPath;
         this.properties     = new Properties ();
 
