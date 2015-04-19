@@ -51,15 +51,22 @@ public final class ConfigurationManager {
             throw new IOException ("You can only pass an instance of an interface.");
         }
 
-        String workingDirectory = System.getProperty("user.dir");
+        String workingDirectory = System.getProperty ("user.dir");
         Path sourcePath = Paths.get (workingDirectory, configuration.value ());
 
         Class<?>[] interfaces = {clazz};
         StorageManager storageManager    = new PropertiesStorageManager (sourcePath);
 
-        ConfigurationProxyImpl proxyImpl = new ConfigurationProxyImpl(storageManager, configuration.prefix ());
+        String keyPrefix = null;
+
+        if (clazz.isAnnotationPresent (Key.class)) {
+            keyPrefix = clazz.getAnnotation (Key.class).value ();
+        }
+
+        ConfigurationProxy proxyImpl = new ConfigurationProxy (storageManager, keyPrefix);
 
         return clazz.cast (Proxy.newProxyInstance (clazz.getClassLoader (), interfaces, proxyImpl));
     }
+
 }
 

@@ -33,10 +33,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Configuration {
     String value ();
-
-    /**
-     *
-     * @return
-     */
-    String prefix() default "";
 }
