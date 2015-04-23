@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author Tony Stone
  * @date 4/12/15
  */
-interface StorageManager {
+interface StorageProvider {
 
     /**
      * Load the values from disk into internal storage.

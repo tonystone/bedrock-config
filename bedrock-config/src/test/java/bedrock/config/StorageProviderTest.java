@@ -24,12 +24,12 @@ import static org.testng.Assert.*;
  * @author      Tony Stone
  * @date        4/13/15
  */
-public abstract class StorageManagerTest {
+public abstract class StorageProviderTest {
 
     /**
      * Storage manager to use for suite of tests.
      */
-    protected StorageManager storageManager = null;
+    protected StorageProvider storageProvider = null;
 
     /**
      * Class to store test values in
@@ -92,14 +92,14 @@ public abstract class StorageManagerTest {
      * @return
      * @throws Exception
      */
-    abstract StorageManager newStorageManager () throws Exception;
+    abstract StorageProvider newStorageManager () throws Exception;
 
     @BeforeSuite
     public void beforeSuite () throws Exception {
 
         setUp ();
 
-        storageManager = newStorageManager ();
+        storageProvider = newStorageManager ();
     }
 
     @AfterSuite
@@ -111,33 +111,33 @@ public abstract class StorageManagerTest {
     @Test
     public void testSetValue () throws Exception {
         for (TestParameters parameters : testData) {
-            storageManager.setValue (parameters.key, parameters.value);
+            storageProvider.setValue (parameters.key, parameters.value);
         }
     }
 
     @Test (dependsOnMethods={"testSetValue"})
     public void testStore () throws Exception {
-        storageManager.store ();
+        storageProvider.store ();
     }
 
     @Test (dependsOnMethods={"testStore"})
     public void testLoad () throws Exception {
         // We create a new store here so we're sure it loads from disk
-        storageManager = newStorageManager ();
+        storageProvider = newStorageManager ();
     }
 
     @Test (dependsOnMethods={"testLoad"})
     public void testGetValue () throws Exception {
 
         for (TestParameters parameters : testData) {
-            assertEquals (storageManager.getValue (parameters.key, parameters.type), parameters.value);
+            assertEquals (storageProvider.getValue (parameters.key, parameters.type), parameters.value);
         }
     }
 
     @Test (dependsOnMethods={"testLoad"})
     public void testGetValueWithDefault () throws Exception {
         for (TestParameters parameters : testData) {
-            assertEquals (storageManager.getValue (parameters.key, parameters.type, parameters.value.toString ()), parameters.value);
+            assertEquals (storageProvider.getValue (parameters.key, parameters.type, parameters.value.toString ()), parameters.value);
         }
     }
 }

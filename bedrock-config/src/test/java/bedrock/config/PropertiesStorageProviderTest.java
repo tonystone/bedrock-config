@@ -27,7 +27,7 @@ import static org.testng.Assert.assertEquals;
  * @author      Tony Stone
  * @date        4/13/15
  */
-public class PropertiesStorageManagerTest extends StorageManagerTest {
+public class PropertiesStorageProviderTest extends StorageProviderTest {
 
     /**
      * Define the working directory for creation of test files.
@@ -54,7 +54,7 @@ public class PropertiesStorageManagerTest extends StorageManagerTest {
     }
 
     @Override
-    StorageManager newStorageManager () throws Exception {
-        return new PropertiesStorageManager (propertiesPath);
+    StorageProvider newStorageManager () throws Exception {
+        return new PropertiesStorageProvider (propertiesPath);
     }
 }
