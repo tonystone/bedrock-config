@@ -41,6 +41,7 @@ public class PropertiesStorageProviderTest extends StorageProviderTest {
         }
     };
 
+    private Path propertiesPath = Paths.get ("./bedrock-config.properties");
 
     @Override
     void setUp () throws Exception {
