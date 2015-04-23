@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bedrock-config xmlns="http://www.mobilegridinc.com/schemas/bedrock/config/v1" version="1.0">
+
+
+    <storage-provider class="bedrock.config.PropertiesStorageProvider">
+
+        <description>
+            We're setting the global settings to a source
+            that does not exist to make sure this gets overridden
+            by the class spec below.
+        </description>
+
+        <properties>
+            <property name="source" value="file-does-not-exist.properties"/>
+            <property name="searchPaths" value="./;~/"/>
+        </properties>
+    </storage-provider>
+
+    <configuration class="bedrock.config.ConfigurationManagerTest$TestConfiguration">
+
+        <description>
+            Override global settings for the TestConfiguration class which
+            should pass and be available for the tests to run.
+        </description>
+
+        <storage-provider>
+            <properties>
+                <property name="source" value="TestConfiguration.properties"/>
+                <property name="searchPaths" value="./;~/"/>
+            </properties>
+        </storage-provider>
+    </configuration>
+    
+
+</bedrock-config>

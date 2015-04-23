@@ -41,9 +41,9 @@ public class ConfigurationManagerTest {
      * This is the test configuration interface which will be created
      * and used to access the properties in the files.
      */
-    @Configuration(propertiesFileName)
+    @Configuration
     @Key (keyPrefix)
-    private interface TestConfiguration {
+    public interface TestConfiguration {
 
         @Key("string")
         String stringValue ();
@@ -81,7 +81,7 @@ public class ConfigurationManagerTest {
      * {@code @Configuration} annotation.  This interface
      * is to test the error handling when they are not.
      */
-    private interface BadTestConfiguration {
+    public interface BadTestConfiguration {
 
     }
 
@@ -90,8 +90,8 @@ public class ConfigurationManagerTest {
      * a class. This class is to test the error handling when
      * a class is passed.
      */
-    @Configuration(value=propertiesFileName)
-    private class BadClassTestConfiguration {
+    @Configuration
+    public class BadClassTestConfiguration {
 
     }
 

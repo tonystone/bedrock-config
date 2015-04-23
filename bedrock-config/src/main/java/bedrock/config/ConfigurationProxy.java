@@ -27,7 +27,7 @@ class ConfigurationProxy implements InvocationHandler {
      * The storage manager responsible for storing and
      * retrieving values from the persistent storage.
      */
-    private StorageManager storageManager;
+    private StorageProvider storageProvider;
 
     /**
      * The prefix to append to the beginning of
@@ -45,11 +45,11 @@ class ConfigurationProxy implements InvocationHandler {
      * Construct an instance of this class with a valid
      * storage stratagy manager.
      *
-     * @param storageManager    Trhe storage manager to manage peristent storage.
+     * @param storageProvider    Trhe storage manager to manage peristent storage.
      * @param keyPrefix
      */
-    public ConfigurationProxy (StorageManager storageManager, String keyPrefix) {
-        this.storageManager = storageManager;
+    public ConfigurationProxy (StorageProvider storageProvider, String keyPrefix) {
+        this.storageProvider = storageProvider;
         this.keyPrefix      = keyPrefix;
     }
 
@@ -82,9 +82,9 @@ class ConfigurationProxy implements InvocationHandler {
         DefaultValue defaultValueAnnotation = method.getAnnotation (DefaultValue.class);
 
         if (defaultValueAnnotation != null) {
-            result = storageManager.getValue (key , method.getReturnType (), defaultValueAnnotation.value ());
+            result = storageProvider.getValue (key , method.getReturnType (), defaultValueAnnotation.value ());
         } else {
-            result = storageManager.getValue (key, method.getReturnType ());
+            result = storageProvider.getValue (key, method.getReturnType ());
         }
         return result;
     }

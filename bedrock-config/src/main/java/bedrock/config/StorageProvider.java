@@ -10,9 +10,10 @@
 package bedrock.config;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * @interface StorageManager
+ * @interface StorageProvider
  * @package bedrock.config
  *
  * @brief A brief description.
@@ -20,17 +21,30 @@ import java.io.IOException;
  * @author Tony Stone
  * @date 4/12/15
  */
-interface StorageProvider {
+abstract class StorageProvider {
+
+    /**
+     * Default constructor required for all subclasses
+     * of this class.
+     *
+     * If you require settings for your subclass, override
+     * this constructor and the settings will be passed to
+     * you in the properties.
+     *
+     * @param properties
+     * @throws IOException
+     */
+    StorageProvider (Map<String,String> properties) throws IOException {}
 
     /**
      * Load the values from disk into internal storage.
      */
-    void load () throws IOException;
+    abstract void load () throws IOException;
 
     /**
      * Store the current values to disk
      */
-    void store () throws IOException;
+    abstract void store () throws IOException;
 
     /**
      * Get the value associated with the key.
@@ -39,7 +53,7 @@ interface StorageProvider {
      * @param targetType
      * @return The object at key.
      */
-    Object getValue (String key, Class<?> targetType);
+    abstract Object getValue (String key, Class<?> targetType);
 
     /**
      * Get the value associated with the key or the default value if
@@ -51,7 +65,7 @@ interface StorageProvider {
      *
      * @return The value stored or the defaultValue if key was not found.
      */
-    Object getValue (String key, Class<?> targetType, String defaultValue);
+    abstract Object getValue (String key, Class<?> targetType, String defaultValue);
 
     /**
      * Set the value associated with the new.
@@ -59,5 +73,5 @@ interface StorageProvider {
      * @param key The key for the value that will be set.
      * @param value The value to set for key.
      */
-    void setValue (String key, Object value);
+    abstract void setValue (String key, Object value);
 }

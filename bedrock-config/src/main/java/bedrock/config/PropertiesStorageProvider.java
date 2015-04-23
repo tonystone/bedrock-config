@@ -12,10 +12,13 @@ package bedrock.config;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Properties;
 
 /**
- * @class StorageManagerPropertiesImpl
+ * @class PropertiesStorageProvider
  * @package bedrock.config
  *
  * @brief A brief description.
@@ -23,24 +26,69 @@ import java.util.Properties;
  * @author Tony Stone
  * @date 4/12/15
  */
-class PropertiesStorageProvider implements StorageProvider {
+class PropertiesStorageProvider extends StorageProvider {
 
     /**
-     * Backing store for this implementation.
+     * Actual properties file path which
+     * was found by searching paths in searchPaths.
      */
-    private Properties properties;
+    private Path sourcePath;
 
-    private Path propertiesPath;
+    /**
+     * The backing store backingStore.
+     */
+    private Properties backingStore = new Properties ();
 
-    private PropertiesStorageProvider () {
-    }
+    /**
+     * Constructor needed as an override to the abstract base class'.
+     *
+     * @param properties The properties to set up this provider.
+     *
+     * @throws MissingResourceException If a key in the properties is required but missing
+     *
+     * @throws IOException If there is an issue reading or writing to the backingStore.
+     */
+    PropertiesStorageProvider (Map<String, String> properties) throws MissingResourceException, IOException {
+        super (properties);
 
-    public PropertiesStorageProvider (Path propertiesPath) throws IOException {
-        this.propertiesPath = propertiesPath;
-        this.properties     = new Properties ();
+        String sourceProperty = properties.get ("source");
 
-        if (Files.exists (propertiesPath)) {
-            this.load ();
+        if (sourceProperty == null) {
+            throw new MissingResourceException ("You must defined a property named source to define the name of the source file.", PropertiesStorageProvider.class.getName (), "source");
+        }
+
+        String searchPathsProperty = properties.get ("searchPaths");
+
+        if (searchPathsProperty == null) {
+            throw new MissingResourceException ("You must defined a property named searchPaths to define a list of paths to search for source.", PropertiesStorageProvider.class.getName (), "searchPaths");
+        }
+
+        String[] searchPaths = searchPathsProperty.split (";");
+
+        for (String searchPathString : searchPaths) {
+            Path sourcePath = Paths.get (searchPathString.trim (),sourceProperty);
+
+            if (Files.exists (sourcePath)) {
+                // Store the first file we find as the path
+                this.sourcePath = sourcePath;
+
+                // Only load if we find the file
+                this.load ();
+            }
+        }
+
+        //
+        // If we didn't find anything in the search path
+        // create a source path from the first entry in the
+        // searchPaths list if available.
+        //
+        if (sourcePath == null) {
+            String searchPath = "./";
+
+            if (searchPaths.length > 0) {
+                searchPath = searchPaths[0];
+            }
+            sourcePath = Paths.get (searchPath, sourceProperty);
         }
     }
 
@@ -49,7 +97,7 @@ class PropertiesStorageProvider implements StorageProvider {
      */
     @Override
     public void load () throws IOException {
-        properties.load (Files.newInputStream (propertiesPath));
+        backingStore.load (Files.newInputStream (sourcePath));
     }
 
     /**
@@ -57,7 +105,7 @@ class PropertiesStorageProvider implements StorageProvider {
      */
     @Override
     public void store () throws IOException {
-        properties.store (Files.newOutputStream (propertiesPath), null);
+        backingStore.store (Files.newOutputStream (sourcePath), null);
     }
 
     /**
@@ -69,7 +117,7 @@ class PropertiesStorageProvider implements StorageProvider {
      */
     @Override
     public Object getValue (String key, Class<?> targetType) {
-        String stringValue = properties.getProperty (key);
+        String stringValue = backingStore.getProperty (key);
 
         return this.convert (stringValue, targetType);
     }
@@ -86,7 +134,7 @@ class PropertiesStorageProvider implements StorageProvider {
      */
     @Override
     public Object getValue (String key, Class<?> targetType, String defaultValue) {
-        String stringValue = properties.getProperty (key, defaultValue);
+        String stringValue = backingStore.getProperty (key, defaultValue);
 
         return this.convert (stringValue, targetType);
     }
@@ -98,7 +146,7 @@ class PropertiesStorageProvider implements StorageProvider {
      */
     @Override
     public void setValue (String key, Object value) {
-        properties.setProperty (key, value.toString ());
+        backingStore.setProperty (key, value.toString ());
     }
 
     private Object convert(String value, Class<?> targetType) {

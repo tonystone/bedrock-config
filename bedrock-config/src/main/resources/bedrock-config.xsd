@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.mobilegridinc.com/schemas/bedrock/config/v1"
+           xmlns:tns="http://www.mobilegridinc.com/schemas/bedrock/config/v1"
+           elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"
+               schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+    <xsd:annotation>
+        <xsd:documentation>
+
+            @(#)bedrock-config.xsd  1.0  April 21, 2015
+
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:annotation>
+        <xsd:documentation>
+
+            Copyright (c) 2015 Mobile Grid, Inc. All rights reserved.
+
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:simpleType name="versionType">
+        <xsd:restriction base="xsd:token">
+            <xsd:pattern value="[0-9]+(\.[0-9]+)*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="descriptionType" mixed="true">
+        <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0"
+                    maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="title" type="xsd:string"/>
+        <xsd:anyAttribute/>
+    </xsd:complexType>
+
+    <xsd:complexType name="storageProviderType">
+        <xsd:sequence>
+            <xsd:element name="description" type="tns:descriptionType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="class" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="properties" minOccurs="0">
+
+                <xsd:annotation>
+                    <xsd:documentation>
+
+                        A list of standard and storage-manager-specific properties.
+
+                    </xsd:documentation>
+                </xsd:annotation>
+
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="property"
+                                     minOccurs="0" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    A name-value pair.
+                                </xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:attribute name="name" type="xsd:string" use="required"/>
+                                <xsd:attribute name="value" type="xsd:string" use="required"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="class" type="xsd:anyType" use="optional"/>
+        <xsd:anyAttribute/>
+    </xsd:complexType>
+
+    <xsd:complexType  name="configurationType">
+        <xsd:sequence>
+            <xsd:element name="description" type="tns:descriptionType" minOccurs="0" maxOccurs="1"/>
+            <!--<xsd:element name="class" minOccurs="1" maxOccurs="1"/>-->
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="storage-provider" type="tns:storageProviderType" minOccurs="1" maxOccurs="1"/>
+            </xsd:choice>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="class" type="xsd:anyType" use="required"/>
+        <xsd:anyAttribute/>
+    </xsd:complexType>
+
+    <xsd:element name="bedrock-config">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="description" type="tns:descriptionType" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="storage-provider" type="tns:storageProviderType" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="configuration" type="configurationType" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attribute name="version" type="versionType" fixed="1.0" use="required"/>
+            <xsd:anyAttribute/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

@@ -10,9 +10,10 @@
 package bedrock.config;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Map;
 
 /**
  * @class       ConfigurationManager
@@ -51,21 +52,61 @@ public final class ConfigurationManager {
             throw new IOException ("You can only pass an instance of an interface.");
         }
 
-        String workingDirectory = System.getProperty ("user.dir");
-        Path sourcePath = Paths.get (workingDirectory, configuration.value ());
+        ConfigurationProxy proxyImpl = new ConfigurationProxy (getStorageProvider (clazz, configuration), getKeyPrefix (clazz));
 
         Class<?>[] interfaces = {clazz};
-        StorageManager storageManager    = new PropertiesStorageManager (sourcePath);
 
+        return clazz.cast (Proxy.newProxyInstance (clazz.getClassLoader (), interfaces, proxyImpl));
+    }
+
+    /**
+     * Return the key prefix to use for all key lookups
+     * for attributes.
+     *
+     * @param clazz The @Configuration annotated class
+     *
+     * @return  the prefix String to use or null if non
+     */
+    private static String getKeyPrefix (Class<?> clazz) {
         String keyPrefix = null;
 
         if (clazz.isAnnotationPresent (Key.class)) {
             keyPrefix = clazz.getAnnotation (Key.class).value ();
         }
+        return keyPrefix;
+    }
 
-        ConfigurationProxy proxyImpl = new ConfigurationProxy (storageManager, keyPrefix);
+    /**
+     * Returns the Storage provider to use for this class instance.
+     *
+     * @param clazz
+     * @param configuration
+     * @return
+     * @throws IOException
+     */
+    private static StorageProvider getStorageProvider (Class<?> clazz, Configuration configuration) throws IOException {
 
-        return clazz.cast (Proxy.newProxyInstance (clazz.getClassLoader (), interfaces, proxyImpl));
+        StorageProvider storageProvider = null;
+
+        ConfigurationSettings configurationSettings = ConfigurationSettings.getConfigurationSettings (clazz);
+
+        try {
+            Class<?> storageProviderClass = Class.forName (configurationSettings.getStorageProvider (), false, clazz.getClassLoader ());
+
+            if (StorageProvider.class.isAssignableFrom (storageProviderClass)) {
+
+                Class<?> parTypes[] = new Class<?>[1];
+                parTypes[0] = Map.class;
+
+                Constructor constructor = storageProviderClass.getDeclaredConstructor (parTypes);
+
+                storageProvider = StorageProvider.class.cast (constructor.newInstance (configurationSettings.getProperties ()));
+            }
+
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            throw new IOException (e);
+        }
+        return storageProvider;
     }
 
 }

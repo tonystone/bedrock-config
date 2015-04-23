@@ -3,6 +3,8 @@ package bedrock.config;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.testng.Assert.assertEquals;
@@ -30,14 +32,14 @@ import static org.testng.Assert.assertEquals;
 public class PropertiesStorageProviderTest extends StorageProviderTest {
 
     /**
-     * Define the working directory for creation of test files.
+     * Properties to configure the PropertiesStorageProvider with
      */
-    private static final String workingDirectory = System.getProperty ("user.dir");
-
-    /**
-     * Create a temporary file in the working directory for storeage of our test properties
-     */
-    private static final Path propertiesPath = Paths.get (workingDirectory, "test-" + UUID.randomUUID () + ".properties");
+    private Map<String,String> properties = new HashMap<String,String> () {
+        {
+            put ("source","bedrock-config.properties");
+            put ("searchPaths","./;~/");
+        }
+    };
 
 
     @Override
@@ -55,6 +57,6 @@ public class PropertiesStorageProviderTest extends StorageProviderTest {
 
     @Override
     StorageProvider newStorageManager () throws Exception {
-        return new PropertiesStorageProvider (propertiesPath);
+        return new PropertiesStorageProvider (properties);
     }
 }
