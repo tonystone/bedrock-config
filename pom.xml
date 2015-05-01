@@ -14,11 +14,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>${project.parent.artifactId}-config</artifactId>
+    <artifactId>bedrock-config</artifactId>
     <packaging>jar</packaging>
 
     <build>
-        <finalName>${project.parent.artifactId}-config-${project.parent.version}</finalName>
+        <finalName>${project.artifactId}-${project.parent.version}</finalName>
     </build>
 
     <dependencies>
