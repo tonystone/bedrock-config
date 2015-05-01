@@ -6,49 +6,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.mobilegridinc.bedrock</groupId>
+        <artifactId>bedrock-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../bedrock-parent</relativePath>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>bedrock</groupId>
-    <artifactId>bedrock</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-
-    <description>Mobile Grid MediaStore DAM</description>
-    <organization>
-        <name>Mobile Grid, Inc.</name>
-        <url>http://www.mobilegridinc.com</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>stone</id>
-            <name>Tony Stone</name>
-            <organization>Mobile Grid, Inc.</organization>
-        </developer>
-    </developers>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.8</jdk.version>
-        <jee.version>7.0</jee.version>
-    </properties>
-
-    <modules>
-        <module>bedrock-config</module>
-    </modules>
+    <artifactId>${project.parent.artifactId}-config</artifactId>
+    <packaging>jar</packaging>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
+        <finalName>${project.parent.artifactId}-config-${project.parent.version}</finalName>
     </build>
+
+    <dependencies>
+        <!--
+            Testing Frameworks
+        -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>
