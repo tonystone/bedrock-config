@@ -9,6 +9,9 @@
 
 package bedrock.config;
 
+import bedrock.config.annotation.DefaultValue;
+import bedrock.config.annotation.Key;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 

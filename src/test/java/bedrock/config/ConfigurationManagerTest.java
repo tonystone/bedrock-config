@@ -9,8 +9,9 @@
 
 package bedrock.config;
 
-import bedrock.config.*;
-import bedrock.config.Configuration;
+import bedrock.config.annotation.Configuration;
+import bedrock.config.annotation.DefaultValue;
+import bedrock.config.annotation.Key;
 import org.testng.annotations.*;
 
 import java.io.IOException;

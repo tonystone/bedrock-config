@@ -7,7 +7,7 @@
  * @date 4/12/15 7:50 AM
  */
 
-package bedrock.config;
+package bedrock.config.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

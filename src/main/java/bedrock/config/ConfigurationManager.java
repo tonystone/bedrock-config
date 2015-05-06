@@ -9,6 +9,9 @@
 
 package bedrock.config;
 
+import bedrock.config.annotation.Configuration;
+import bedrock.config.annotation.Key;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
