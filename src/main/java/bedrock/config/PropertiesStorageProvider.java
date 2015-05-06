@@ -54,7 +54,7 @@ class PropertiesStorageProvider extends StorageProvider {
         String sourceProperty = properties.get ("source");
 
         if (sourceProperty == null) {
-            throw new MissingResourceException ("You must defined a property named source to define the name of the source file.", PropertiesStorageProvider.class.getName (), "source");
+            throw new MissingResourceException ("You must define a property named source to define the name of the source file.", PropertiesStorageProvider.class.getName (), "source");
         }
 
         String searchPathsProperty = properties.get ("searchPaths");
