@@ -43,7 +43,6 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}-${project.parent.version}</finalName>
         <!--
             Lock down plugin versions and settings
         -->
